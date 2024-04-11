@@ -1,3 +1,4 @@
+/* Compiler / Code Generator  START */
 class ParseNode {
     constructor() {
         this.type = "root";
@@ -8,39 +9,7 @@ class ParseNode {
         this.gap = 0;
         this.flexDirection = "row";
         this.id = "0";
-
-
     }
-}
-
-var root = new ParseNode();
-var current = root;
-updateListTree();
-
-function buildListTree(node, parent) {
-    let ul = document.createElement("ul");
-    let li = document.createElement("li");
-    li.textContent = "C" + node.id;
-    ul.appendChild(li);
-
-    li.addEventListener("click", function(event) {
-        if(event.target.closest("li") === li){
-            selectNode(node.id);
-        }
-    });
-
-    if(node.children && node.children.length > 0) {
-        node.children.forEach(child => {
-            buildListTree(child, li);
-        });
-    }
-
-    parent.appendChild(ul);
-}
-
-function updateListTree() {
-    document.getElementById("ParseNodes").innerHTML = "";
-    buildListTree(root, document.getElementById("ParseNodes"));
 }
 
 function addChild(n) {
@@ -49,11 +18,6 @@ function addChild(n) {
         newNode.id = current.id + current.children.length.toString();
         current.children.push(newNode);
     }
-    //console.log("Added " + n + " children to " + current.id);
-    // for(var i = 0; i < n; i++) {
-    //     console.log(current.children[i].id);
-    // }
-
     updateListTree();
 }
 
@@ -69,7 +33,7 @@ function selectNode(id) {
             return root;
         } else {
             node = node.children[parseInt(id.charAt(i))];
-            console.log("Selected " + node.id);
+            //console.log("Selected " + node.id);
         }
     }
     current = node;
@@ -116,7 +80,73 @@ function generateCode() {
     // debugTree(current);
 }
 function start() {
+    root = new ParseNode();
+    updateListTree();
     doStuff(root);
     console.log("Done");
 }
+
+
+/* Compiler / Code Generator  END */
+
+/* Tree View START */
+
+
+function buildListTree(node, parent) {
+    let ul = document.createElement("ul");
+    let li = document.createElement("li");
+    li.textContent = "C" + node.id;
+    ul.appendChild(li);
+
+    li.addEventListener("click", function(event) {
+        if(event.target.closest("li") === li){
+            selectNode(node.id);
+        }
+    });
+
+    if(node.children && node.children.length > 0) {
+        node.children.forEach(child => {
+            buildListTree(child, li);
+        });
+    }
+
+    parent.appendChild(ul);
+}
+
+function updateListTree() {
+    document.getElementById("TreeView").innerHTML = "";
+    buildListTree(root, document.getElementById("TreeView"));
+}
+
+
+/* Tree View END */
+
+/* Tree View Resize START */
+var TVCdiv = document.getElementById("TreeViewResizer");
+
+function handleResize(event) {
+    TVCdiv.style.width = event.pageX + "px";
+    if(event.pageX > window.innerWidth / 2) {
+        TVCdiv.style.width = window.innerWidth / 2 + "px";
+    }
+    TVCdiv.style.cursor = "ew-resize";
+}
+
+TVCdiv.addEventListener('mousedown', function(event) {
+    document.addEventListener('mousemove', handleResize);
+});
+document.addEventListener('mouseup', function() {
+    document.removeEventListener('mousemove', handleResize);
+});
+/* Tree View Resize END */
+
+/* Start Stuff */
+
+var root = new ParseNode();
+var current = root;
+updateListTree();
+
+
+
+
 

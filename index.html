@@ -7,9 +7,15 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body class="c0">
-    
-    <div class="c00" id="ParseNodes">
-        <h1><strong>Parse Tree</strong></h1>
+    <div class="TreeViewContainer">
+        <div class="TVC">
+            <div class="TreeViewHeader">
+                <h1><strong>Parse Tree</strong></h1>
+            </div>
+            <div class="TreeView" id="TreeView">
+            </div>
+        </div>
+        <div id="TreeViewResizer" style="flex: 1;"></div>
     </div>
     <div class="c01">
         <button onclick="generateCode()">Generate!</button>
