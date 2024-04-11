@@ -1,0 +1,19 @@
+.c0 {
+    display: flex;
+}
+.c00 {
+    flex : 1;
+    border-right-width: 5px;
+    border-right-style: double;
+    height: 100vh;
+
+    ul {
+        color: blue;
+        font-size: x-large;
+        font-weight: bold;
+    }
+}
+.c01 {
+    display: flex;
+    flex : 5; 
+}

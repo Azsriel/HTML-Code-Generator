@@ -8,11 +8,40 @@ class ParseNode {
         this.gap = 0;
         this.flexDirection = "row";
         this.id = "0";
+
+
     }
 }
 
 var root = new ParseNode();
 var current = root;
+updateListTree();
+
+function buildListTree(node, parent) {
+    let ul = document.createElement("ul");
+    let li = document.createElement("li");
+    li.textContent = "C" + node.id;
+    ul.appendChild(li);
+
+    li.addEventListener("click", function(event) {
+        if(event.target.closest("li") === li){
+            selectNode(node.id);
+        }
+    });
+
+    if(node.children && node.children.length > 0) {
+        node.children.forEach(child => {
+            buildListTree(child, li);
+        });
+    }
+
+    parent.appendChild(ul);
+}
+
+function updateListTree() {
+    document.getElementById("ParseNodes").innerHTML = "";
+    buildListTree(root, document.getElementById("ParseNodes"));
+}
 
 function addChild(n) {
     for (var i = 0; i < n; i++) {
@@ -20,10 +49,12 @@ function addChild(n) {
         newNode.id = current.id + current.children.length.toString();
         current.children.push(newNode);
     }
-    console.log("Added " + n + " children to " + current.id);
-    for(var i = 0; i < n; i++) {
-        console.log(current.children[i].id);
-    }
+    //console.log("Added " + n + " children to " + current.id);
+    // for(var i = 0; i < n; i++) {
+    //     console.log(current.children[i].id);
+    // }
+
+    updateListTree();
 }
 
 function selectNode(id) {

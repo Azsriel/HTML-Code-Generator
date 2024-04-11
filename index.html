@@ -3,14 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>HTML Code Generator</title>
+    <link rel="stylesheet" href="style.css">
 </head>
-<body>
+<body class="c0">
+    
+    <div class="c00" id="ParseNodes">
+        <h1><strong>Parse Tree</strong></h1>
+    </div>
+    <div class="c01">
+        <button onclick="generateCode()">Generate!</button>
+        <textarea id="code" cols = 50 rows = 20>
+            
+        </textarea>
+        <button onclick="start()">Test!</button>
+    </div>
     <script src="script.js"></script>
-    <button onclick="generateCode()">Generate!</button>
-    <textarea id="code" cols = 50 rows = 20>
-        
-    </textarea>
-    <button onclick="start()">Test!</button>
 </body>
 </html>
