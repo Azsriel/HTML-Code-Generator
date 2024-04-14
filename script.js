@@ -1,20 +1,22 @@
 /* Compiler / Code Generator  START */
 class ParseNode {
-    constructor() {
-        this.type = "root";
-        this.children = [];
-        this.flex = 1;
-        this.mainAxisAlignment = "";
-        this.crossAxisAlignment = "";
-        this.gap = 0;
-        this.flexDirection = "row";
+    constructor(type) {
+        this.type = type;
         this.id = "0";
+        this.children = [];
+        this.properties = {};
     }
 }
 
+const inputTypes = {
+    color: "color",
+    backgroundColor: "color",
+}
+
+
 function addChild(n) {
     for (var i = 0; i < n; i++) {
-        var newNode = new ParseNode();
+        var newNode = new ParseNode("div");
         newNode.id = current.id + current.children.length.toString();
         current.children.push(newNode);
     }
@@ -22,11 +24,13 @@ function addChild(n) {
 }
 
 function selectNode(id) {
+    // Tree View
     var li = document.getElementById("C" + current.id);
     if(li) {
         li.style.color = "blue";
     }
 
+    // Code View
     if(id.charAt(0) != "0") {
         console.log("Invalid ID -- " + id);
         return root;
@@ -42,11 +46,12 @@ function selectNode(id) {
         }
     }
     current = node;
+
+    // Inspector View
+    buildInspectorView();
+
 }
 
-function changeFlex(flex) {
-    current.flex = flex;
-}
 
 function getText(node, text = "") {
     text += "\t".repeat(node.id.length - 1) + "<div>" + "\n";
@@ -65,7 +70,6 @@ function doStuff() {
     selectNode("00");
     addChild(3);
     selectNode("001");
-    changeFlex(2);
     selectNode("0");
     addChild(1);
 }
@@ -85,15 +89,14 @@ function generateCode() {
     // debugTree(current);
 }
 function reset() {
-    root = new ParseNode();
+    root = new ParseNode("div");
     updateListTree();
     current = root;
 
     document.getElementById("code").value = "";
 }
 function start() {
-    root = new ParseNode();
-    updateListTree();
+    reset();
     doStuff(root);
     console.log("Done");
 }
@@ -134,6 +137,55 @@ function updateListTree() {
 
 
 /* Tree View END */
+
+/* Inspector View START */
+
+function buildInspectorView() {
+    let name = document.getElementById("CurrentSelected")
+    name.innerHTML = "<strong>" + "C" + current.id + "</strong>";
+
+    let div = document.getElementById("CurrentProperties");
+    div.innerHTML = "";
+
+    if(Object.keys(current.properties).length === 0) {
+        div.innerHTML = "No Properties";
+        return;
+    }
+
+    for(var prop in current.properties) {
+        let divv = document.createElement("div");
+        divv.style.display = "flex";
+        divv.style.gap = "10px";
+        divv.style.alignItems = "center";
+        let p = document.createElement("p");
+        p.textContent = prop + ": ";
+        divv.appendChild(p);
+        let inputDiv = document.createElement("div");
+        let inputType = inputTypes[prop];
+
+        if (inputType) {
+            const input = document.createElement("input");
+            input.type = inputType;
+            input.id = prop;
+            input.defaultValue = current.properties[prop];
+            input.placeholder = `Enter value for ${prop}`;
+            inputDiv.appendChild(input);
+
+            (function(property) {
+                input.addEventListener("change", function(event) {
+                    current.properties[property] = event.target.value;
+                });
+            })(prop)
+
+        } else {
+            inputDiv.textContent = "No input needed for this property.";
+        }
+        divv.appendChild(inputDiv);
+        div.appendChild(divv);
+    }
+}
+
+/* Inspector View END */
 
 /* View Resize START */
 var TVCdiv = document.getElementById("TreeViewResizer");

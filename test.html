@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CSS Property Input Form with Search</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+    }
+    .input-container {
+      margin-bottom: 10px;
+    }
+  </style>
+</head>
+<body>
+  <h1>CSS Property Input Form with Search</h1>
+  <div class="input-container">
+    <label for="cssProperty">Select CSS Property:</label>
+    <input type="text" id="propertySearch" placeholder="Search CSS properties">
+    <select id="cssProperty">
+      <!-- Options will be populated dynamically with JavaScript -->
+    </select>
+  </div>
+  <div id="inputField"></div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      const cssPropertySelect = document.getElementById("cssProperty");
+      const propertySearchInput = document.getElementById("propertySearch");
+      const inputField = document.getElementById("inputField");
+
+      // Object mapping CSS properties to their respective input types
+      const inputTypes = {
+        color: "color",
+        fontSize: "number",
+        lineHeight: "number",
+        letterSpacing: "number"
+        // Add more properties as needed
+      };
+
+      // Populate select options with CSS properties
+      Object.keys(inputTypes).forEach(property => {
+        const option = document.createElement("option");
+        option.value = property;
+        option.textContent = property;
+        cssPropertySelect.appendChild(option);
+      });
+
+      // Event listener for select change
+      cssPropertySelect.addEventListener("change", updateInputField);
+
+      // Event listener for search input
+      propertySearchInput.addEventListener("input", function() {
+        const searchText = this.value.toLowerCase();
+        Array.from(cssPropertySelect.options).forEach(option => {
+          const property = option.textContent.toLowerCase();
+          option.style.display = property.includes(searchText) ? "block" : "none";
+        });
+      });
+
+      // Function to update input field
+      function updateInputField() {
+        const selectedProperty = cssPropertySelect.value;
+        const inputType = inputTypes[selectedProperty];
+
+        // Remove any previously added input field
+        inputField.innerHTML = "";
+
+        // Create appropriate input field based on selected property
+        if (inputType) {
+          const input = document.createElement("input");
+          input.type = inputType;
+          input.id = selectedProperty;
+          input.placeholder = `Enter value for ${selectedProperty}`;
+          inputField.appendChild(input);
+        } else {
+          inputField.textContent = "No input needed for this property.";
+        }
+      }
+    });
+  </script>
+</body>
+</html>
