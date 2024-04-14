@@ -3,7 +3,7 @@
 }
 .TreeViewContainer {
     display: flex;
-    flex:1;
+    flex:2;
 }
 .TVC {
     flex:10;
@@ -24,6 +24,48 @@
         font-weight: bold;
     }
 }
-.c01 {
+.CodeViewContainer {
     flex : 5; 
+    display: flex;
+    justify-content: center;
+}
+.InspectViewContainer {
+    display: flex;
+    flex: 2;
+}
+.InspectViewContent {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 10px
+}
+.IVC {
+    flex:10;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    border-left-width: 5px;
+    border-left-style: double;
+
+    .button {
+        display: inline-block;
+        padding: 10px 20px;
+        font-size: 16px;
+        font-weight: bold;
+        text-decoration: none;
+        color: #fff;
+        background-color: #4CAF50;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+      }
+      
+      .button:hover {
+        background-color: #45a049;
+      }
+      
+      .button:active {
+        background-color: #39803c;
+      }
 }

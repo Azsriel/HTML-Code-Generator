@@ -17,12 +17,27 @@
         </div>
         <div id="TreeViewResizer" style="flex: 1;"></div>
     </div>
-    <div class="c01">
-        <button onclick="generateCode()">Generate!</button>
+    <div class="CodeViewContainer">
         <textarea id="code" cols = 50 rows = 20>
             
         </textarea>
-        <button onclick="start()">Test!</button>
+    </div>
+    <div class="InspectViewContainer">
+        <div id="InspectorViewResizer" style="flex: 1;"></div>
+        <div class="IVC">
+            <div class="InspectViewHeader">
+                <h1><strong>Inspector</strong></h1>
+            </div>
+            <div class="InspectViewContent">
+                <div class="always">
+                    <button onclick="generateCode()">Generate!</button>
+                    <button onclick="reset()">Reset!</button>
+                </div>
+                <div class="contents">
+                    <button onclick="start()">Test!</button>
+                </div>
+            </div>
+        </div>
     </div>
     <script src="script.js"></script>
 </body>

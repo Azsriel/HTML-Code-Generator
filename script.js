@@ -22,6 +22,11 @@ function addChild(n) {
 }
 
 function selectNode(id) {
+    var li = document.getElementById("C" + current.id);
+    if(li) {
+        li.style.color = "blue";
+    }
+
     if(id.charAt(0) != "0") {
         console.log("Invalid ID -- " + id);
         return root;
@@ -79,6 +84,13 @@ function generateCode() {
 
     // debugTree(current);
 }
+function reset() {
+    root = new ParseNode();
+    updateListTree();
+    current = root;
+
+    document.getElementById("code").value = "";
+}
 function start() {
     root = new ParseNode();
     updateListTree();
@@ -96,11 +108,13 @@ function buildListTree(node, parent) {
     let ul = document.createElement("ul");
     let li = document.createElement("li");
     li.textContent = "C" + node.id;
+    li.id = "C" + node.id;
     ul.appendChild(li);
 
     li.addEventListener("click", function(event) {
         if(event.target.closest("li") === li){
             selectNode(node.id);
+            li.style.color = "red";
         }
     });
 
@@ -121,30 +135,55 @@ function updateListTree() {
 
 /* Tree View END */
 
-/* Tree View Resize START */
+/* View Resize START */
 var TVCdiv = document.getElementById("TreeViewResizer");
+var IVCdiv = document.getElementById("InspectorViewResizer");
+var select = 0;
+
+function resizeLimitBool(event) {
+    if(select === 1) {
+        return event.clientX > window.innerWidth / 2;
+    } else if(select === 2) {
+        return event.clientX < window.innerWidth / 2;
+    } else {
+        return false;
+    }
+}
 
 function handleResize(event) {
-    TVCdiv.style.width = event.pageX + "px";
-    if(event.pageX > window.innerWidth / 2) {
-        TVCdiv.style.width = window.innerWidth / 2 + "px";
+    let selectedDiv = select === 1 ? TVCdiv : IVCdiv;
+    if(select === 1) {
+        selectedDiv.style.width = event.clientX + "px";
+    } else if (select === 2) {
+        selectedDiv.style.width = window.innerWidth - event.clientX + "px";
     }
-    TVCdiv.style.cursor = "ew-resize";
+    if(resizeLimitBool(event)) {
+        selectedDiv.style.width = window.innerWidth / 2 + "px";
+    }
+    selectedDiv.style.cursor = "ew-resize";
 }
 
 TVCdiv.addEventListener('mousedown', function(event) {
+    select = 1;
     document.addEventListener('mousemove', handleResize);
 });
 document.addEventListener('mouseup', function() {
+    select = 0;
     document.removeEventListener('mousemove', handleResize);
 });
-/* Tree View Resize END */
+
+IVCdiv.addEventListener('mousedown', function(event) {
+    select = 2;
+    document.addEventListener('mousemove', handleResize);
+});
+document.addEventListener('mouseup', function() {
+    select = 0;
+    document.removeEventListener('mousemove', handleResize);
+});
+/* View Resize END */
 
 /* Start Stuff */
-
-var root = new ParseNode();
-var current = root;
-updateListTree();
+reset();
 
 
 
